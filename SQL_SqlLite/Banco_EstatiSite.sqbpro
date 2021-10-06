@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Cliente/Desktop/Banco_EstatiSite.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="857"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,12:mainbase_compras"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE base_compras (
+Id int,
+Nome varchar(50),
+Sobrenome varchar(50),
+Estado varchar(2),
+Gastos decimal,
+Data_Compra date
+);
+
+INSERT INTO base_compras
+VALUES
+(152, 'Andre', 'Silva', 'MG', 351.50, '2018-01-22'),
+(222, 'Barbara', 'Toledo', 'SP', 250.10, '2018-05-15'),
+(451, 'Carlos', 'Pinheiro', 'MG', 455.00, '2017-02-05'),
+(754, 'Eduardo', 'Silva', 'SP', 390.10, '2018-04-10'),
+(897, 'Juliana', 'Oliveira', 'MG', 150.50, '2017-03-01'),
+(852, 'Maria', 'Lima', 'MG', 325.90, '2018-05-30'),
+(997, 'Ricardo', 'Pereira', 'MG', 332.59, '2018-05-25'),
+(535, 'Vanessa', 'Costa', 'BA', 241.57, '2017-04-30');
+
+
+SELECT * FROM base_compras
+
+SELECT Id FROM base_compras
+
+SELECT Id, Nome, Estado FROM base_compras
+
+SELECT * from base_compras WHERE Estado = &quot;SP&quot;
+
+CREATE table clientes_SP AS SELECT * FROM base_compras WHERE Estado = &quot;MG&quot;;
+
+SELECT * FROM base_compras WHERE Estado = &quot;MG&quot; or Gastos &lt; 300; 
+
+SELECT * from base_compras
+WHERE Estado = 'SP' or Gastos &gt; 300
+
+SELECT * from base_compras
+WHERE NOT Estado = 'SP'
+
+/*cria tabela com novo campo*/
+CREATE TABLE base_compras_v2 AS SELECT *, (Id || Nome || Sobrenome) as Id_New from base_compras
+
+/*exibe elementos da tabela*/
+SELECT * from base_compras_v2
+
+DROP TABLE base_compras_v2
+
+SELECT * from base_compras_v2
+ORDER BY Id DESC
+
+/*insere linha com valor nulo*/
+
+INSERT INTO base_compras_v2
+VALUES
+(645, NULL, 'Ferreira', NULL, 555.57, '2018-05-05', NULL);
+/*mostra elementos da tabela*/
+
+SELECT * from base_compras_v2
+
+SELECT  * FROM base_compras_v2 WHERE Id_New IS NULL;
+
+CREATE TABLE base_Id_NOT_NULL as
+SELECT * FROM base_compras_v2
+WHERE Id_New IS NOT NULL
+
+SELECT * FROM base_Id_NOT_NULL
+
+/*obtem o gasto maximo*/
+SELECT max(Gastos) FROM base_Id_NOT_NULL
+
+/*obtem o gasto minimo*/
+SELECT min(Gastos) FROM base_Id_NOT_NULL
+
+/*obtem o media de gastos*/
+SELECT avg(Gastos) FROM base_Id_NOT_NULL
+
+/*conta numero de elementos*/
+SELECT count(Id) FROM base_Id_NOT_NUL;
+
+/*conta numero de elementos*/
+SELECT count(Id) as Contagem_Id FROM base_Id_NOT_NULL
+
+SELECT Estado, avg(Gastos) as Media_Gasto
+FROM base_Id_NOT_NULL
+GROUP BY Estado
+
+/*cria a base com identificacao das lojas*/
+CREATE TABLE base_lojas (
+Id int,
+Loja varchar(50),
+Data_Compra date
+);
+
+INSERT INTO base_lojas
+VALUES
+(152, 'Loja C', '2018-01-22'),
+(222, 'Loja A', '2018-05-15'),
+(451, 'Loja C', '2017-02-05'),
+(754, 'Loja A', '2018-04-10'),
+(897, 'Loja E', '2017-03-01'),
+(852, 'Loja E', '2018-05-30'),
+(997, 'Loja D', '2018-05-25'),
+(535, 'Loja B', '2017-04-30');
+
+SELECT * FROM base_lojas
+
+
+/*traz a identificacao da loja*/
+
+CREATE TABLE base_Id_NOT_NULL_v2 AS
+SELECT A.*, B.Loja
+FROM base_Id_NOT_NULL as A
+LEFT JOIN base_lojas as B
+on A.Id = B.Id;
+
+/*mostra o resultado do join*/
+SELECT * FROM base_Id_NOT_NULL_v2
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
